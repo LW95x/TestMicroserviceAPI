@@ -27,8 +27,6 @@ RUN dotnet publish "MicroserviceAPI.Payments.csproj" -c $BUILD_CONFIGURATION -o 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-# Copy the appsettings.Development.json file into the container
-COPY ["appsettings.Development.json", "./"]
 # Set the environment to Development
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENTRYPOINT ["dotnet", "MicroserviceAPI.Payments.dll"]

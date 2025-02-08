@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 var connectionString = Environment.GetEnvironmentVariable("ConnectionString")
-                       ?? builder.Configuration.GetConnectionString("OrdersDB-Local");
+                       ?? builder.Configuration.GetConnectionString("OrdersDB");
 
 builder.Services.AddDbContext<OrdersDbContext>(options =>
     options.UseSqlServer(connectionString));

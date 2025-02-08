@@ -13,6 +13,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{91DD2FC8-067A-4D48-9369-839181359E1E}"
 	ProjectSection(SolutionItems) = preProject
+		.env = .env
 		ingress.yml = ingress.yml
 		kind-config.yml = kind-config.yml
 	EndProjectSection

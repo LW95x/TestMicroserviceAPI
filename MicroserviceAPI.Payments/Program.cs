@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 var connectionString = Environment.GetEnvironmentVariable("ConnectionString")
-                       ?? builder.Configuration.GetConnectionString("PaymentsDB-Local");
+                       ?? builder.Configuration.GetConnectionString("PaymentsDB");
 
 builder.Services.AddDbContext<PaymentsDbContext>(options =>
     options.UseSqlServer(connectionString));
