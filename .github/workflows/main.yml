@@ -27,12 +27,12 @@ jobs:
 
       - name: Build application
         env:
-          ConnectionStrings__OrdersDB: ${{ secrets.ORDERS_DB_CONNECTION_STRING }}
+          ConnectionString: ${{ secrets.ORDERS_DB_CONNECTION_STRING }}
         run: dotnet build --configuration Release --no-restore MicroserviceAPI.Orders/MicroserviceAPI.Orders.csproj
 
       - name: Publish application
         env:
-          ConnectionStrings__OrdersDB: ${{ secrets.ORDERS_DB_CONNECTION_STRING }}
+          ConnectionString: ${{ secrets.ORDERS_DB_CONNECTION_STRING }}
         run: dotnet publish --configuration Release --no-build --output ./publish MicroserviceAPI.Orders/MicroserviceAPI.Orders.csproj
 
   docker-publish-orders:
@@ -77,12 +77,12 @@ jobs:
 
       - name: Build application
         env:
-          ConnectionStrings__PaymentsDB: ${{ secrets.PAYMENTS_DB_CONNECTION_STRING }}
+          ConnectionString: ${{ secrets.PAYMENTS_DB_CONNECTION_STRING }}
         run: dotnet build --configuration Release --no-restore MicroserviceAPI.Payments/MicroserviceAPI.Payments.csproj
 
       - name: Publish application
         env:
-          ConnectionStrings__PaymentsDB: ${{ secrets.PAYMENTS_DB_CONNECTION_STRING }}
+          ConnectionString: ${{ secrets.PAYMENTS_DB_CONNECTION_STRING }}
         run: dotnet publish --configuration Release --no-build --output ./publish MicroserviceAPI.Payments/MicroserviceAPI.Payments.csproj
 
   docker-publish-payments:
@@ -127,12 +127,12 @@ jobs:
 
       - name: Build application
         env:
-          ConnectionStrings__ProductsDB: ${{ secrets.PRODUCTS_DB_CONNECTION_STRING }}
+          ConnectionString: ${{ secrets.PRODUCTS_DB_CONNECTION_STRING }}
         run: dotnet build --configuration Release --no-restore MicroserviceAPI.Products/MicroserviceAPI.Products.csproj
 
       - name: Publish application
         env:
-          ConnectionStrings__ProductsDB: ${{ secrets.PRODUCTS_DB_CONNECTION_STRING }}
+          ConnectionString: ${{ secrets.PRODUCTS_DB_CONNECTION_STRING }}
         run: dotnet publish --configuration Release --no-build --output ./publish MicroserviceAPI.Products/MicroserviceAPI.Products.csproj
 
   docker-publish-products:
