@@ -15,7 +15,7 @@ WORKDIR /src/MicroserviceAPI.Orders
 RUN dotnet restore
 
 # Copy the remaining source code and build the project
-COPY . .
+COPY MicroserviceAPI.Orders/. .
 RUN dotnet build "MicroserviceAPI.Orders.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish stage
