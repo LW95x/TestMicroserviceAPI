@@ -11,8 +11,8 @@ WORKDIR /src
 
 # Copy the project file and restore dependencies
 COPY ["MicroserviceAPI.Orders/MicroserviceAPI.Orders.csproj", "MicroserviceAPI.Orders/"]
-
-RUN dotnet restore "MicroserviceAPI.Orders.csproj"
+WORKDIR /src/MicroserviceAPI.Orders
+RUN dotnet restore
 
 # Copy the remaining source code and build the project
 COPY . .
@@ -27,6 +27,7 @@ RUN dotnet publish "MicroserviceAPI.Orders.csproj" -c $BUILD_CONFIGURATION -o /a
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 # Set the environment to Development
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENTRYPOINT ["dotnet", "MicroserviceAPI.Orders.dll"]
