@@ -17,7 +17,7 @@ namespace MicroserviceAPI.Orders.Controllers
         [HttpGet]
         public async Task <Order> Get()
         {
-            return new Order("Order #1", 10);
+            return new Order("Order #1 - Test", 10);
 
         }
     }
