@@ -53,6 +53,9 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
+      - name: Debug File System
+        run: ls -R
+
       - name: Build Docker Images
         run: |
          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:latest -f MicroserviceAPI.Orders/Dockerfile .
