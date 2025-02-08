@@ -1,0 +1,167 @@
+name: CI/CD Pipeline
+
+on:
+  push: 
+    branches: 
+      - main
+  pull_request:
+    branches:
+      - main
+      
+jobs:
+  build-orders:
+    name: Build & Publish Orders API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setting up .NET Core Web API
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.0'
+
+      - name: Restore dependencies
+        run: dotnet restore MicroserviceAPI.Orders/MicroserviceAPI.Orders.csproj
+
+      - name: Build application
+        env:
+          ConnectionStrings__OrdersDB: ${{ secrets.ORDERS_DB_CONNECTION_STRING }}
+        run: dotnet build --configuration Release --no-restore MicroserviceAPI.Orders/MicroserviceAPI.Orders.csproj
+
+      - name: Publish application
+        env:
+          ConnectionStrings__OrdersDB: ${{ secrets.ORDERS_DB_CONNECTION_STRING }}
+        run: dotnet publish --configuration Release --no-build --output ./publish MicroserviceAPI.Orders/MicroserviceAPI.Orders.csproj
+
+  docker-publish-orders:
+    name: Build & Push Docker Image (Orders)
+    needs: build-orders
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1.0.0
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build Docker Images
+        run: |
+         docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:latest -f MicroserviceAPI.Orders/Dockerfile .
+
+      - name: Push Docker Images to ACR
+        run: |
+         docker push ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:latest
+
+  build-payments:
+    name: Build & Publish Payments API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.0'
+
+      - name: Restore dependencies
+        run: dotnet restore MicroserviceAPI.Payments/MicroserviceAPI.Payments.csproj
+
+      - name: Build application
+        env:
+          ConnectionStrings__PaymentsDB: ${{ secrets.PAYMENTS_DB_CONNECTION_STRING }}
+        run: dotnet build --configuration Release --no-restore MicroserviceAPI.Payments/MicroserviceAPI.Payments.csproj
+
+      - name: Publish application
+        env:
+          ConnectionStrings__PaymentsDB: ${{ secrets.PAYMENTS_DB_CONNECTION_STRING }}
+        run: dotnet publish --configuration Release --no-build --output ./publish MicroserviceAPI.Payments/MicroserviceAPI.Payments.csproj
+
+  docker-publish-payments:
+    name: Build & Push Docker Image (Payments)
+    needs: build-payments
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build Docker Image
+        run: |
+         docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/payments-api:latest -f MicroserviceAPI.Payments/Dockerfile .
+
+      - name: Push Docker Image to ACR
+        run: |
+         docker push ${{ secrets.ACR_LOGIN_SERVER }}/payments-api:latest
+
+  build-products:
+    name: Build & Publish Products API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.0'
+
+      - name: Restore dependencies
+        run: dotnet restore MicroserviceAPI.Products/MicroserviceAPI.Products.csproj
+
+      - name: Build application
+        env:
+          ConnectionStrings__ProductsDB: ${{ secrets.PRODUCTS_DB_CONNECTION_STRING }}
+        run: dotnet build --configuration Release --no-restore MicroserviceAPI.Products/MicroserviceAPI.Products.csproj
+
+      - name: Publish application
+        env:
+          ConnectionStrings__ProductsDB: ${{ secrets.PRODUCTS_DB_CONNECTION_STRING }}
+        run: dotnet publish --configuration Release --no-build --output ./publish MicroserviceAPI.Products/MicroserviceAPI.Products.csproj
+
+  docker-publish-products:
+    name: Build & Push Docker Image (Products)
+    needs: build-products
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build Docker Image
+        run: |
+         docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/products-api:latest -f MicroserviceAPI.Products/Dockerfile .
+
+      - name: Push Docker Image to ACR
+        run: |
+         docker push ${{ secrets.ACR_LOGIN_SERVER }}/products-api:latest
+
+
+         
+        
+        
+
+        
