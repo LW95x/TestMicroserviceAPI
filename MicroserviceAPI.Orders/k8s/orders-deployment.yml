@@ -1,0 +1,36 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-deployment
+  labels:
+    app: orders
+spec:
+  replicas: 1  # Run 2 instances of this microservice
+  selector:
+    matchLabels:
+      app: orders  # Select pods with this label
+  template:
+    metadata:
+      labels:
+        app: orders # Labels for the pod
+    spec:
+      containers:
+        - name: orders
+          image: testmicroservicesregistrydocker.azurecr.io/microservice-orders:v1 # Replace with your image
+          ports:
+            - containerPort: 80  # The app listens on port 80
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orders-db-secret  # The name of the secret in Kubernetes
+                  key: ConnectionString     # The key inside the secret
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+          resources:
+            requests:
+                cpu: "250m"  # Change from 1 to 250m (¼ CPU)
+                memory: "256Mi"  # Reduce memory usage
+            limits:
+                cpu: "500m"  # Reduce CPU limit
+                memory: "512Mi"

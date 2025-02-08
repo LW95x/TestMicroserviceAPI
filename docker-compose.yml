@@ -1,0 +1,36 @@
+services:
+  microserviceapi.orders:
+    image: testmicroservicesregistrydocker.azurecr.io/microservice-orders:v1
+    build:
+      context: ./MicroserviceAPI.Orders
+      dockerfile: Dockerfile
+    volumes:
+      - ./MicroserviceAPI.Orders:/usr/src/app
+    ports: 
+      - "8080:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - microserviceapi.payments
+  microserviceapi.payments:
+     image: testmicroservicesregistrydocker.azurecr.io/microservice-payments:v1
+     build:
+        context: ./MicroserviceAPI.Payments
+        dockerfile: Dockerfile
+     volumes:
+       - ./MicroserviceAPI.Payments:/usr/src/app
+     ports: 
+       - "8081:80"
+     environment:
+        - ASPNETCORE_URLS=http://+:80
+  microserviceapi.products:
+     image: testmicroservicesregistrydocker.azurecr.io/microservice-products:v1
+     build:
+        context: ./MicroserviceAPI.Products
+        dockerfile: Dockerfile
+     volumes:
+       - ./MicroserviceAPI.Products:/usr/src/app
+     ports: 
+       - "8082:80"
+     environment:
+        - ASPNETCORE_URLS=http://+:80
