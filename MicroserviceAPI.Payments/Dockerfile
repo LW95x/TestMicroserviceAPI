@@ -10,12 +10,12 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy the project file and restore dependencies
-COPY ["MicroserviceAPI.Payments.csproj", "./"]
-
-RUN dotnet restore "MicroserviceAPI.Payments.csproj"
+COPY ["MicroserviceAPI.Payments/MicroserviceAPI.Payments.csproj", "MicroserviceAPI.Payments/"]
+WORKDIR /src/MicroserviceAPI.Payments
+RUN dotnet restore
 
 # Copy the remaining source code and build the project
-COPY . .
+COPY MicroserviceAPI.Payments/. .
 RUN dotnet build "MicroserviceAPI.Payments.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish stage
@@ -27,6 +27,7 @@ RUN dotnet publish "MicroserviceAPI.Payments.csproj" -c $BUILD_CONFIGURATION -o 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 # Set the environment to Development
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENTRYPOINT ["dotnet", "MicroserviceAPI.Payments.dll"]
