@@ -22,7 +22,7 @@ jobs:
       - name: Setting up .NET Core Web API
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.0'
+          dotnet-version: '8.0.x'
 
       - name: Restore dependencies
         run: dotnet restore MicroserviceAPI.Orders/MicroserviceAPI.Orders.csproj
