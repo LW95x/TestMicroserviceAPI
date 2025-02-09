@@ -17,7 +17,7 @@ namespace MicroserviceAPI.Products.Controllers
         [HttpGet]
         public async Task <Product> GetProduct()
         {
-            return new Product("Deckchair", 10);
+            return new Product("TEST Deckchair", 10);
         }
     }
 }

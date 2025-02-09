@@ -17,7 +17,7 @@ namespace MicroserviceAPI.Payments.Controllers
         [HttpGet]
         public async Task <Payment> Get()
         {
-            return new Payment("Liam", "UK", "Barclays");
+            return new Payment("Liam", "UK", "TEST Barclays");
         }
     }
 }
