@@ -1,5 +1,6 @@
 services:
   microserviceapi.orders:
+    container_name: orders-api
     image: testmicroservicesregistrydocker.azurecr.io/microservice-orders:latest
     build:
       context: .
@@ -13,6 +14,7 @@ services:
       - microserviceapi.payments
 
   microserviceapi.payments:
+    container_name: payments-api
     image: testmicroservicesregistrydocker.azurecr.io/microservice-payments:latest
     build:
       context: .
@@ -24,6 +26,7 @@ services:
       - ConnectionString=${PAYMENTS_DB_CONNECTION_STRING}
 
   microserviceapi.products:
+    container_name: products-api
     image: testmicroservicesregistrydocker.azurecr.io/microservice-products:latest
     build:
       context: .
