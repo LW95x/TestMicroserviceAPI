@@ -27,7 +27,7 @@ namespace MicroserviceAPI.Orders.Controllers
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var product = JsonSerializer.Deserialize<ProductDTO>(jsonResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new ProductDTO("Unknown Product", 0);
 
-            return new Order("Test Name", product.Price);
+            return new Order(product.Title, product.Price);
 
         }
     }
