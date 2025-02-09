@@ -58,11 +58,11 @@ jobs:
 
       - name: Build Docker Images
         run: |
-         docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:latest -f MicroserviceAPI.Orders/Dockerfile .
+         docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:${{ github.sha }} -f MicroserviceAPI.Orders/Dockerfile .
 
       - name: Push Docker Images to ACR
         run: |
-         docker push ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:latest
+         docker push ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:${{ github.sha }}
 
       - name: Azure Login for Azure Container Apps
         uses: azure/login@v1
@@ -74,7 +74,7 @@ jobs:
           az containerapp update \
             --name orders-api \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --image ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:latest \
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:${{ github.sha }} \
             --set registryServer=${{ secrets.ACR_LOGIN_SERVER }} \
             --set registryUsername=${{ secrets.ACR_USERNAME }} \
             --set registryPassword=${{ secrets.ACR_PASSWORD }}
