@@ -1,36 +1,35 @@
 services:
   microserviceapi.orders:
-    image: testmicroservicesregistrydocker.azurecr.io/microservice-orders:v1
+    image: testmicroservicesregistrydocker.azurecr.io/microservice-orders:latest
     build:
-      context: ./MicroserviceAPI.Orders
-      dockerfile: Dockerfile
-    volumes:
-      - ./MicroserviceAPI.Orders:/usr/src/app
+      context: .
+      dockerfile: MicroserviceAPI.Orders/Dockerfile
     ports: 
       - "8080:80"
     environment:
       - ASPNETCORE_URLS=http://+:80
+      - ConnectionString=${ORDERS_DB_CONNECTION_STRING}
     depends_on:
       - microserviceapi.payments
+
   microserviceapi.payments:
-     image: testmicroservicesregistrydocker.azurecr.io/microservice-payments:v1
-     build:
-        context: ./MicroserviceAPI.Payments
-        dockerfile: Dockerfile
-     volumes:
-       - ./MicroserviceAPI.Payments:/usr/src/app
-     ports: 
-       - "8081:80"
-     environment:
-        - ASPNETCORE_URLS=http://+:80
+    image: testmicroservicesregistrydocker.azurecr.io/microservice-payments:latest
+    build:
+      context: .
+      dockerfile: MicroserviceAPI.Payments/Dockerfile
+    ports: 
+      - "8081:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionString=${PAYMENTS_DB_CONNECTION_STRING}
+
   microserviceapi.products:
-     image: testmicroservicesregistrydocker.azurecr.io/microservice-products:v1
-     build:
-        context: ./MicroserviceAPI.Products
-        dockerfile: Dockerfile
-     volumes:
-       - ./MicroserviceAPI.Products:/usr/src/app
-     ports: 
-       - "8082:80"
-     environment:
-        - ASPNETCORE_URLS=http://+:80
+    image: testmicroservicesregistrydocker.azurecr.io/microservice-products:latest
+    build:
+      context: .
+      dockerfile: MicroserviceAPI.Products/Dockerfile
+    ports: 
+      - "8082:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionString=${PRODUCTS_DB_CONNECTION_STRING}

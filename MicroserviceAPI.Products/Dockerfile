@@ -10,7 +10,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy the project file and restore dependencies
-COPY ["MicroserviceAPI.Products/MicroserviceAPI.Products.csproj", "MicroserviceAPI.Products/"]
+COPY MicroserviceAPI.Products/MicroserviceAPI.Products.csproj MicroserviceAPI.Products/
 WORKDIR /src/MicroserviceAPI.Products
 RUN dotnet restore
 
