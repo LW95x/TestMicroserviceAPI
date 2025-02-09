@@ -64,6 +64,21 @@ jobs:
         run: |
          docker push ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:latest
 
+      - name: Azure Login for Azure Container Apps
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp update \
+            --name orders-api \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/orders-api:latest \
+            --set registryServer=${{ secrets.ACR_LOGIN_SERVER }} \
+            --set registryUsername=${{ secrets.ACR_USERNAME }} \
+            --set registryPassword=${{ secrets.ACR_PASSWORD }}
+
   build-payments:
     name: Build & Publish Payments API
     runs-on: ubuntu-latest
