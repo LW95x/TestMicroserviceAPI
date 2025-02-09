@@ -137,7 +137,7 @@ jobs:
       - name: Deploy to Azure Container Apps
         run: |
           az containerapp update \
-            --name orders-api \
+            --name payments-api \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --image ${{ secrets.ACR_LOGIN_SERVER }}/payments-api:${{ github.sha }} \
             --set registryServer=${{ secrets.ACR_LOGIN_SERVER }} \
@@ -202,7 +202,7 @@ jobs:
       - name: Deploy to Azure Container Apps
         run: |
           az containerapp update \
-            --name orders-api \
+            --name products-api \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --image ${{ secrets.ACR_LOGIN_SERVER }}/products-api:${{ github.sha }} \
             --set registryServer=${{ secrets.ACR_LOGIN_SERVER }} \
